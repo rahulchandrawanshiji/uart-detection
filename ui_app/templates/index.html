@@ -1,0 +1,398 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 15px;
+        }
+        #clickButton {
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background: #ff7eb3;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        #clickButton:hover {
+            background: #ff5177;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Smart Object Detection</h1>
+        <button id="clickButton">Start Object Detection</button>
+    </div>
+
+    <script>
+        document.getElementById("clickButton").addEventListener("click", function() {
+            fetch("/start-detection/")
+                .then(response => response.json())
+                .then(data => alert(data.message))
+                .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            margin-top: 20px;
+            color: #444;
+        }
+        .button-container {
+            margin: 10px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #log {
+            margin-top: 20px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+    </style>
+    <script>
+        function getCSRFToken() {
+            return document.getElementById("csrf_token").value;
+        }
+
+        function sendCommand(command) {
+            fetch("", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": getCSRFToken() // Include CSRF Token
+                },
+                body: `command=${command}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("log").innerHTML += `<p><strong>Sent:</strong> ${data.command} | <strong>Response:</strong> ${data.response}</p>`;
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Device Control Panel</h1>
+
+    
+    <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+
+    <h2>Lock Operations</h2>
+    <div class="button-container">
+        <button onclick="sendCommand('$C01,01,00#')">Lock 1 Off</button>
+        <button onclick="sendCommand('$C01,01,01#')">Lock 1 On</button>
+        <button onclick="sendCommand('$C01,99,00#')">All Locks Off</button>
+        <button onclick="sendCommand('$C01,99,01#')">All Locks On</button>
+    </div>
+
+    <h2>Fan Operations</h2>
+    <div class="button-container">
+        <button onclick="sendCommand('$C02,01,00#')">Fan 1 Off</button>
+        <button onclick="sendCommand('$C02,01,01#')">Fan 1 On</button>
+        <button onclick="sendCommand('$C02,99,00#')">All Fans Off</button>
+        <button onclick="sendCommand('$C02,99,01#')">All Fans On</button>
+    </div>
+
+    <h2>Light Operations</h2>
+    <div class="button-container">
+        <button onclick="sendCommand('$C03,01,00#')">Light 1 Off</button>
+        <button onclick="sendCommand('$C03,01,01#')">Light 1 On</button>
+        <button onclick="sendCommand('$C03,99,00#')">All Lights Off</button>
+        <button onclick="sendCommand('$C03,99,01#')">All Lights On</button>
+    </div>
+
+    <h2>Command Log</h2>
+    <div id="log"></div>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 { color: #333; }
+        h2 { margin-top: 20px; color: #444; }
+        .button-container { margin: 10px; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #0056b3; }
+        #log {
+            margin-top: 20px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+    </style>
+    <script>
+        function sendCommand(command) {
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch("/control-device/", {  // Corrected URL
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": csrftoken
+                },
+                body: `command=${encodeURIComponent(command)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("log").innerHTML += `<p><strong>Sent:</strong> ${data.command} | <strong>Response:</strong> ${data.response}</p>`;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Device Control Panel</h1>
+
+    
+    <form method="POST">
+        {% csrf_token %}
+    </form>
+
+    <h2>Lock Operations</h2>
+    <div class="button-container">
+        <button onclick="sendCommand('$C01,01,00#')">Lock 1 Off</button>
+        <button onclick="sendCommand('$C01,01,01#')">Lock 1 On</button>
+        <button onclick="sendCommand('$C01,99,00#')">All Locks Off</button>
+        <button onclick="sendCommand('$C01,99,01#')">All Locks On</button>
+    </div>
+
+    <h2>Fan Operations</h2>
+    <div class="button-container">
+        <button onclick="sendCommand('$C02,01,00#')">Fan 1 Off</button>
+        <button onclick="sendCommand('$C02,01,01#')">Fan 1 On</button>
+        <button onclick="sendCommand('$C02,99,00#')">All Fans Off</button>
+        <button onclick="sendCommand('$C02,99,01#')">All Fans On</button>
+    </div>
+
+    <h2>Light Operations</h2>
+    <div class="button-container">
+        <button onclick="sendCommand('$C03,01,00#')">Light 1 Off</button>
+        <button onclick="sendCommand('$C03,01,01#')">Light 1 On</button>
+        <button onclick="sendCommand('$C03,99,00#')">All Lights Off</button>
+        <button onclick="sendCommand('$C03,99,01#')">All Lights On</button>
+    </div>
+
+    <h2>Command Log</h2>
+    <div id="log"></div>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Control</title>
+    <style>
+        /* Full-screen mode */
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        h1 { color: #333; }
+        h2 { margin-top: 20px; color: #444; }
+        .button-container { margin: 10px; }
+        
+        /* Default Button Styles */
+        button {
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 150px;
+        }
+        
+        /* Button Colors */
+        .on { background-color: #007bff; }  /* Blue for ON */
+        .off { background-color: #ff0000; } /* Red for OFF */
+        
+        button:hover { opacity: 0.8; }
+
+        #log {
+            margin-top: 20px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+    </style>
+    <script>
+        function sendCommand(button, command, isOn) {
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch("/control-device/", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": csrftoken
+                },
+                body: `command=${encodeURIComponent(command)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update the command log to only show the latest response
+                document.getElementById("log").innerHTML = `<p><strong>Sent:</strong> ${data.command} | <strong>Response:</strong> ${data.response}</p>`;
+                button.className = isOn ? "on" : "off"; // Update button color
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        // Function to open full-screen mode
+        function openFullScreen() {
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) { // Firefox
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { // IE/Edge
+                elem.msRequestFullscreen();
+            }
+        }
+
+        // Automatically trigger full-screen mode when page loads
+        document.addEventListener("DOMContentLoaded", function() {
+            openFullScreen();
+        });
+    </script>
+</head>
+<body>
+    <h1>Device Control Panel</h1>
+
+    <!-- CSRF Token Form -->
+    <form method="POST">
+        {% csrf_token %}
+    </form>
+
+    <h2>Lock Operations</h2>
+    <div class="button-container">
+        <button class="off" onclick="sendCommand(this, '$C01,01,00#', false)">Lock 1 Off</button>
+        <button class="on" onclick="sendCommand(this, '$C01,01,01#', true)">Lock 1 On</button>
+        <button class="off" onclick="sendCommand(this, '$C01,99,00#', false)">All Locks Off</button>
+        <button class="on" onclick="sendCommand(this, '$C01,99,01#', true)">All Locks On</button>
+    </div>
+
+    <h2>Fan Operations</h2>
+    <div class="button-container">
+        <button class="off" onclick="sendCommand(this, '$C02,01,00#', false)">Fan 1 Off</button>
+        <button class="on" onclick="sendCommand(this, '$C02,01,01#', true)">Fan 1 On</button>
+        <button class="off" onclick="sendCommand(this, '$C02,99,00#', false)">All Fans Off</button>
+        <button class="on" onclick="sendCommand(this, '$C02,99,01#', true)">All Fans On</button>
+    </div>
+
+    <h2>Light Operations</h2>
+    <div class="button-container">
+        <button class="off" onclick="sendCommand(this, '$C03,01,00#', false)">Light 1 Off</button>
+        <button class="on" onclick="sendCommand(this, '$C03,01,01#', true)">Light 1 On</button>
+        <button class="off" onclick="sendCommand(this, '$C03,99,00#', false)">All Lights Off</button>
+        <button class="on" onclick="sendCommand(this, '$C03,99,01#', true)">All Lights On</button>
+    </div>
+
+    <h2>Command Log</h2>
+    <div id="log"></div>
+</body>
+</html>
+
