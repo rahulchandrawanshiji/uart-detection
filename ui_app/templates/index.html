@@ -272,6 +272,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Device Control</title>
+    <!-- ✅ New Object Detection Button -->
+    <div style="margin-top: 40px; margin-bottom: 20px;">
+        <a href="/detection/">
+            <button style="background-color: #007BFF; color: white; font-size: 15px; padding: 12px 20px; border-radius: 5px; cursor: pointer;">Object Detection</button>
+        </a>
+    </div>
     <style>
         /* Full-screen mode */
         html, body {
@@ -286,22 +292,21 @@
         }
         h1 { color: #333; }
         h2 { margin-top: 20px; color: #444; }
-        .button-container { margin: 10px; }
+        .button-container { margin: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
         
         /* Default Button Styles */
         button {
             color: white;
             border: none;
             padding: 10px 20px;
-            margin: 5px;
             font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
-            width: 150px;
+            width: 160px;
         }
         
         /* Button Colors */
-        .on { background-color: #007bff; }  /* Blue for ON */
+        .on { background-color: #067608; }  /* Blue for ON */
         .off { background-color: #ff0000; } /* Red for OFF */
         
         button:hover { opacity: 0.8; }
@@ -321,7 +326,7 @@
     <script>
         function sendCommand(button, command, isOn) {
             const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
+            
             fetch("/control-device/", {
                 method: "POST",
                 headers: { 
@@ -332,45 +337,27 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Update the command log to only show the latest response
                 document.getElementById("log").innerHTML = `<p><strong>Sent:</strong> ${data.command} | <strong>Response:</strong> ${data.response}</p>`;
                 button.className = isOn ? "on" : "off"; // Update button color
             })
             .catch(error => console.error("Error:", error));
         }
 
-        // Function to open full-screen mode
-        function openFullScreen() {
-            let elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.mozRequestFullScreen) { // Firefox
-                elem.mozRequestFullScreen();
-            } else if (elem.webkitRequestFullscreen) { // Chrome, Safari, Opera
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { // IE/Edge
-                elem.msRequestFullscreen();
-            }
-        }
-
-        // Automatically trigger full-screen mode when page loads
         document.addEventListener("DOMContentLoaded", function() {
-            openFullScreen();
+            document.documentElement.requestFullscreen();
         });
     </script>
 </head>
 <body>
     <h1>Device Control Panel</h1>
-
-    <!-- CSRF Token Form -->
-    <form method="POST">
-        {% csrf_token %}
-    </form>
+    <form method="POST">{% csrf_token %}</form>
 
     <h2>Lock Operations</h2>
     <div class="button-container">
         <button class="off" onclick="sendCommand(this, '$C01,01,00#', false)">Lock 1 Off</button>
         <button class="on" onclick="sendCommand(this, '$C01,01,01#', true)">Lock 1 On</button>
+        <button class="off" onclick="sendCommand(this, '$C01,02,00#', false)">Lock 2 Off</button>
+        <button class="on" onclick="sendCommand(this, '$C01,02,01#', true)">Lock 2 On</button>
         <button class="off" onclick="sendCommand(this, '$C01,99,00#', false)">All Locks Off</button>
         <button class="on" onclick="sendCommand(this, '$C01,99,01#', true)">All Locks On</button>
     </div>
@@ -381,6 +368,8 @@
         <button class="on" onclick="sendCommand(this, '$C02,01,01#', true)">Fan 1 On</button>
         <button class="off" onclick="sendCommand(this, '$C02,99,00#', false)">All Fans Off</button>
         <button class="on" onclick="sendCommand(this, '$C02,99,01#', true)">All Fans On</button>
+        <button class="on" onclick="sendCommand(this, '$C04,01,50#', true)">Fan 1 50%</button>
+        <button class="on" onclick="sendCommand(this, '$C04,01,99#', true)">Fan 1 99%</button>
     </div>
 
     <h2>Light Operations</h2>
@@ -389,10 +378,25 @@
         <button class="on" onclick="sendCommand(this, '$C03,01,01#', true)">Light 1 On</button>
         <button class="off" onclick="sendCommand(this, '$C03,99,00#', false)">All Lights Off</button>
         <button class="on" onclick="sendCommand(this, '$C03,99,01#', true)">All Lights On</button>
+        <button class="on" onclick="sendCommand(this, '$C05,01,50#', true)">Light 1 50%</button>
+        <button class="on" onclick="sendCommand(this, '$C05,01,99#', true)">Light 1 99%</button>
+    </div>
+
+    <h2>LED Operations</h2>
+    <div class="button-container">
+        <button class="off" onclick="sendCommand(this, '$C06,01,00#', false)">LED 1 Off</button>
+        <button class="on" onclick="sendCommand(this, '$C06,01,01#', true)">LED 1 On</button>
+        <button class="off" onclick="sendCommand(this, '$C06,02,00#', false)">LED 2 Off</button>
+        <button class="on" onclick="sendCommand(this, '$A06,02,00#', true)">LED 2 On</button>
+        <button class="off" onclick="sendCommand(this, '$C06,99,00#', false)">All LEDs Off</button>
+        <button class="on" onclick="sendCommand(this, '$C06,99,01#', true)">All LEDs On</button>
     </div>
 
     <h2>Command Log</h2>
     <div id="log"></div>
 </body>
 </html>
+
+
+
 
