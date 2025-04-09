@@ -324,28 +324,57 @@
         }
     </style>
     <script>
-        function sendCommand(button, command, isOn) {
-            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        // function sendCommand(button, command, isOn) {
+        //     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
             
-            fetch("/control-device/", {
-                method: "POST",
-                headers: { 
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "X-CSRFToken": csrftoken
-                },
-                body: `command=${encodeURIComponent(command)}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("log").innerHTML = `<p><strong>Sent:</strong> ${data.command} | <strong>Response:</strong> ${data.response}</p>`;
-                button.className = isOn ? "on" : "off"; // Update button color
-            })
-            .catch(error => console.error("Error:", error));
-        }
+        //     fetch("/control-device/", {
+        //         method: "POST",
+        //         headers: { 
+        //             "Content-Type": "application/x-www-form-urlencoded",
+        //             "X-CSRFToken": csrftoken
+        //         },
+        //         body: `command=${encodeURIComponent(command)}`
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         document.getElementById("log").innerHTML = `<p><strong>Sent:</strong> ${data.command} | <strong>Response:</strong> ${data.response}</p>`;
+        //         button.className = isOn ? "on" : "off"; // Update button color
+        //     })
+        //     .catch(error => console.error("Error:", error));
+        // }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            document.documentElement.requestFullscreen();
-        });
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     document.documentElement.requestFullscreen();
+        // });
+        function sendCommand(button, command, isOn) {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const allButtons = document.querySelectorAll("button"); // Get all buttons
+    
+    // Disable all buttons to prevent multiple clicks
+    allButtons.forEach(btn => btn.disabled = true);
+
+    fetch("/control-device/", {
+        method: "POST",
+        headers: { 
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": csrftoken
+        },
+        body: `command=${encodeURIComponent(command)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("log").innerHTML = `<p><strong>Sent:</strong> ${data.command} | <strong>Response:</strong> ${data.response}</p>`;
+        button.className = isOn ? "on" : "off"; // Update button color
+    })
+    .catch(error => console.error("Error:", error))
+    .finally(() => {
+        // Re-enable all buttons after request is completed
+        setTimeout(() => {
+            allButtons.forEach(btn => btn.disabled = false);
+        }, 1000); // You can adjust delay based on the device response time
+    });
+}
+
     </script>
 </head>
 <body>
