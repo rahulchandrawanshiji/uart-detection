@@ -25,7 +25,7 @@ SECRET_KEY = '_azkd@$$@l9b&p#3ntwso%t3&=4yq=!9(5n_ofa(!b96_%2r_f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','192.168.29.88','localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*','192.168.29.88','localhost', '127.0.0.1','raspberrypi-pi.at.remote.it']
 
 
 # Application definition
@@ -48,6 +48,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_ui_project.middleware.AutoLoginAdminMiddleware',
+
 ]
 
 ROOT_URLCONF = 'simple_ui_project.urls'
@@ -117,5 +119,20 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
+MEDIA_URL = '/'
+MEDIA_ROOT = BASE_DIR  # Because your images are saved in BASE_DIR/detected_images
+CSRF_TRUSTED_ORIGINS = [
+    'http://192.168.29.88:8000',
+    'https://raspberrypi-pi.at.remote.it:33000',
+]
+
+
+SESSION_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+
+TIME_ZONE = 'Asia/Kolkata'
+USE_TZ = True
+
 
 STATIC_URL = '/static/'

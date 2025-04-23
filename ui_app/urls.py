@@ -1,25 +1,10 @@
-# from django.urls import path
-# from .views import home, start_detection
-
-# urlpatterns = [
-#     path('', home, name='home'),
-#     path('start-detection/', start_detection, name='start_detection'),
-# ]
-
-
-# from django.urls import path
-# from .views import home, start_detection, control_device  # Ensure these functions exist
-
-# urlpatterns = [
-#     path("", home, name="home"),
-#     path("start-detection/", start_detection, name="start_detection"),
-#     path("control-device/", control_device, name="control_device"),
-# ]
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 # Main view functions
 from .views import (
-    home, start_detection, control_device, detection_page,
+    home, start_detection, control_device, detection_page,session_test,
     video_feed, stop_detection, sensor_data, send_command_api
 )
 
@@ -50,6 +35,7 @@ urlpatterns = [
     path("api/light/all/on/", uart_api.light_all_on, name="light_all_on"),
     path("api/light/all/off/", uart_api.light_all_off, name="light_all_off"),
     path("api/light/status/", uart_api.light_status, name="light_status"),
-]
+    path("session-test/", session_test, name="session_test"), 
+]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
