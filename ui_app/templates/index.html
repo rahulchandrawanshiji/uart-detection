@@ -1,431 +1,734 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart UI</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Arial', sans-serif;
-        }
-        .container {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            width: 350px;
-        }
-        h1 {
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 15px;
-        }
-        #clickButton {
-            padding: 10px 20px;
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-            background: #ff7eb3;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        #clickButton:hover {
-            background: #ff5177;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Smart Object Detection</h1>
-        <button id="clickButton">Start Object Detection</button>
-    </div>
-
-    <script>
-        document.getElementById("clickButton").addEventListener("click", function() {
-            fetch("/start-detection/")
-                .then(response => response.json())
-                .then(data => alert(data.message))
-                .catch(error => console.error("Error:", error));
-        });
-    </script>
-</body>
-</html> -->
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Device Control</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        h2 {
-            margin-top: 20px;
-            color: #444;
-        }
-        .button-container {
-            margin: 10px;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin: 5px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        #log {
-            margin-top: 20px;
-            padding: 10px;
-            background: white;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: left;
-        }
-    </style>
-    <script>
-        function getCSRFToken() {
-            return document.getElementById("csrf_token").value;
-        }
-
-        function sendCommand(command) {
-            fetch("", {
-                method: "POST",
-                headers: { 
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "X-CSRFToken": getCSRFToken() // Include CSRF Token
-                },
-                body: `command=${command}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("log").innerHTML += `<p><strong>Sent:</strong> ${data.command} | <strong>Response:</strong> ${data.response}</p>`;
-            });
-        }
-    </script>
-</head>
-<body>
-    <h1>Device Control Panel</h1>
-
-    
-    <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
-
-    <h2>Lock Operations</h2>
-    <div class="button-container">
-        <button onclick="sendCommand('$C01,01,00#')">Lock 1 Off</button>
-        <button onclick="sendCommand('$C01,01,01#')">Lock 1 On</button>
-        <button onclick="sendCommand('$C01,99,00#')">All Locks Off</button>
-        <button onclick="sendCommand('$C01,99,01#')">All Locks On</button>
-    </div>
-
-    <h2>Fan Operations</h2>
-    <div class="button-container">
-        <button onclick="sendCommand('$C02,01,00#')">Fan 1 Off</button>
-        <button onclick="sendCommand('$C02,01,01#')">Fan 1 On</button>
-        <button onclick="sendCommand('$C02,99,00#')">All Fans Off</button>
-        <button onclick="sendCommand('$C02,99,01#')">All Fans On</button>
-    </div>
-
-    <h2>Light Operations</h2>
-    <div class="button-container">
-        <button onclick="sendCommand('$C03,01,00#')">Light 1 Off</button>
-        <button onclick="sendCommand('$C03,01,01#')">Light 1 On</button>
-        <button onclick="sendCommand('$C03,99,00#')">All Lights Off</button>
-        <button onclick="sendCommand('$C03,99,01#')">All Lights On</button>
-    </div>
-
-    <h2>Command Log</h2>
-    <div id="log"></div>
-</body>
-</html> -->
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Device Control</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 { color: #333; }
-        h2 { margin-top: 20px; color: #444; }
-        .button-container { margin: 10px; }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin: 5px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover { background-color: #0056b3; }
-        #log {
-            margin-top: 20px;
-            padding: 10px;
-            background: white;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: left;
-        }
-    </style>
-    <script>
-        function sendCommand(command) {
-            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-            fetch("/control-device/", {  // Corrected URL
-                method: "POST",
-                headers: { 
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "X-CSRFToken": csrftoken
-                },
-                body: `command=${encodeURIComponent(command)}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("log").innerHTML += `<p><strong>Sent:</strong> ${data.command} | <strong>Response:</strong> ${data.response}</p>`;
-            })
-            .catch(error => console.error("Error:", error));
-        }
-    </script>
-</head>
-<body>
-    <h1>Device Control Panel</h1>
-
-    
-    <form method="POST">
-        {% csrf_token %}
-    </form>
-
-    <h2>Lock Operations</h2>
-    <div class="button-container">
-        <button onclick="sendCommand('$C01,01,00#')">Lock 1 Off</button>
-        <button onclick="sendCommand('$C01,01,01#')">Lock 1 On</button>
-        <button onclick="sendCommand('$C01,99,00#')">All Locks Off</button>
-        <button onclick="sendCommand('$C01,99,01#')">All Locks On</button>
-    </div>
-
-    <h2>Fan Operations</h2>
-    <div class="button-container">
-        <button onclick="sendCommand('$C02,01,00#')">Fan 1 Off</button>
-        <button onclick="sendCommand('$C02,01,01#')">Fan 1 On</button>
-        <button onclick="sendCommand('$C02,99,00#')">All Fans Off</button>
-        <button onclick="sendCommand('$C02,99,01#')">All Fans On</button>
-    </div>
-
-    <h2>Light Operations</h2>
-    <div class="button-container">
-        <button onclick="sendCommand('$C03,01,00#')">Light 1 Off</button>
-        <button onclick="sendCommand('$C03,01,01#')">Light 1 On</button>
-        <button onclick="sendCommand('$C03,99,00#')">All Lights Off</button>
-        <button onclick="sendCommand('$C03,99,01#')">All Lights On</button>
-    </div>
-
-    <h2>Command Log</h2>
-    <div id="log"></div>
-</body>
-</html> -->
-
-
-
 <!DOCTYPE html>
 <html lang="en">
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Device Control</title>
-    <!-- ✅ New Object Detection Button -->
-    <div style="margin-top: 40px; margin-bottom: 20px;">
-        <a href="/detection/">
-            <button style="background-color: #007BFF; color: white; font-size: 15px; padding: 12px 20px; border-radius: 5px; cursor: pointer;">Object Detection</button>
-        </a>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <style>
+    .slider-container {
+      position: relative;
+      width: 100% !important;
+      height: 50px;
+      background-color: #e0e0e0;
+      border-radius: 25px;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .slider-track {
+      position: absolute;
+      width: 100%;
+      height: 5px;
+      /* background-color: #ccc; */
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 10px;
+    }
+
+    .slider-handle {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 50px;
+      height: 50px;
+      background-color: #28a745;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transform: translateY(-50%);
+      transition: left 0.3s ease, background-color 0.3s ease;
+    }
+
+    .slider-handle i {
+      color: #ffffff;
+    }
+
+    .slider-text {
+      position: absolute;
+      /* top: 100%; */
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 16px;
+      color: #555;
+      /* margin-top: 10px; */
+    }
+
+    .text-success {
+      color: #28a745;
+    }
+
+    .text-muted {
+      color: #6c757d;
+    }
+
+    .unlocked {
+      background-color: #28a745 !important;
+    }
+
+    .locked {
+      background-color: red !important;
+    }
+
+    .unlocked i {
+      color: white;
+    }
+
+    .locked i {
+      color: white;
+    }
+
+    .section-title {
+      font-weight: 600;
+      /* margin-top: 30px; */
+      text-align: center;
+      font-size: 17px;
+    }
+
+    .status-box {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .toggle-btn {
+      width: 60px;
+    }
+
+    .slider {
+      width: 100%;
+    }
+
+    /* Green Slider Track */
+    input[type="range"] {
+      --range-fill: 0%;
+    }
+
+    input[type="range"].form-range::-webkit-slider-runnable-track {
+      background: linear-gradient(to right, #28a745 0%, #28a745 var(--range-fill), #dee2e6 var(--range-fill));
+    }
+
+    input[type="range"].form-range::-moz-range-track {
+      background: linear-gradient(to right, #28a745 0%, #28a745 var(--range-fill), #dee2e6 var(--range-fill));
+    }
+  </style>
+
+
+</head>
+
+<body>
+  <form method="POST">{% csrf_token %}</form>
+  <div class="container-fluid" style="background-color:#3273a8; position: relative;">
+    <div class="d-flex align-items-center justify-content-between p-3 position-relative">
+
+      <div style="width: 100px;"></div>
+      <!-- Centered Heading -->
+      <h3 class="m-0 h2 text-white">
+        Zenspace Meeting Room Display
+      </h3>
+      <!-- Button on right -->
+      <a href="/new_index/" class="btn btn-light btn-lg">Config Devices</a>
     </div>
-    <style>
-        /* Full-screen mode */
-        html, body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-        }
-        h1 { color: #333; }
-        h2 { margin-top: 20px; color: #444; }
-        .button-container { margin: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-        
-        /* Default Button Styles */
-        button {
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 160px;
-        }
-        
-        /* Button Colors */
-        .on { background-color: #067608; }  /* Blue for ON */
-        .off { background-color: #ff0000; } /* Red for OFF */
-        
-        button:hover { opacity: 0.8; }
-
-        #log {
-            margin-top: 20px;
-            padding: 10px;
-            background: white;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: left;
-        }
-    </style>
-    <script>
-        // function sendCommand(button, command, isOn) {
-        //     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  </div>
+  <div class="container-lg">
+    <div class="p-3">
+      <div class="row">
+        <div class="col-md-6 pe-1">
+          <div class="row p-2 m-1 mb-3 rounded" style="background-color: #3273a81a;">
+            <div class="col-4 d-flex justify-content-between my-auto">
+              <div>
+                <img src="../ui_app/templates/img/delta_uno.png" class="img-fluid" alt="" srcset="" width="50">
+              </div>
+              <h4 class="section-title my-auto">Delta Uno Sensor</h4>
+            </div>
+            <div class="col-8">
+              <div id="deltaUS1Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>IAQ</span>
+                  <span id="iaq">0<span>&nbsp;µg/m³</span></span>
+                </div>
+              </div>
+              <div id="deltaUS2Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>TVOC:</span>
+                  <span id="tvoc">0</span>
+                </div>
+              </div>
+              <div id="deltaUS3Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>PM2.5:</span>
+                  <span id="pm2">0<span>&nbsp;µg/m³</span></span>
+                </div>
+              </div>
+              
+              <!-- <div class="d-flex justify-content-between align-items-center">
+                <span>PM10:</span>
+                <span>Value<span>&nbsp;µg/m³</span></span>
+              </div> -->
+              <!-- <div class="d-flex justify-content-between align-items-center">
+                <span>PM1:</span>
+                <span>Value<span>&nbsp;µg/m³</span></span>
+              </div> -->
+              <!-- <div class="d-flex justify-content-between align-items-center">
+                <span>CO₂:</span>
+                <span>Value<span>&nbsp;ppm</span></span>
+              </div> -->
+              
+              <!-- <div class="d-flex justify-content-between align-items-center">
+                <span>Viral Risk:</span>
+                <span>Value</span>
+              </div> -->
+              <div id="deltaUS4Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Temperature: </span>
+                  <span id="temperatureC">0<span>&nbsp;°C</span></span>
+                </div>
+              </div>
+              <div id="deltaUS5Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Humidity: </span>
+                  <span id="humidity">0<span>&nbsp;%</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Camera Operations -->
+          <div class="row p-2 m-1 mb-3 rounded" style="background-color: #3273a81a;">
+            <div class="col-4 d-flex justify-content-between my-auto">
+              <div>
+                <img src="../ui_app/templates/img/camera.png" class="img-fluid" alt="" srcset="" width="50">
+              </div>
+              <h4 class="section-title my-auto">Camera Operations</h4>
+            </div>
+            <div class="col-8">
+              <div id="camera1Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Occupancy</span>
+                  <span>Occupied</span>
+                </div>
+              </div>
             
-        //     fetch("/control-device/", {
-        //         method: "POST",
-        //         headers: { 
-        //             "Content-Type": "application/x-www-form-urlencoded",
-        //             "X-CSRFToken": csrftoken
-        //         },
-        //         body: `command=${encodeURIComponent(command)}`
-        //     })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         document.getElementById("log").innerHTML = `<p><strong>Sent:</strong> ${data.command} | <strong>Response:</strong> ${data.response}</p>`;
-        //         button.className = isOn ? "on" : "off"; // Update button color
-        //     })
-        //     .catch(error => console.error("Error:", error));
-        // }
+              <div id="camera2Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Number of People</span>
+                  <span>Headcount Value</span>
+                </div>
+              </div>
+            
+              <div id="camera3Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Foreign Object</span>
+                  <span>Value</span>
+                </div>
+              </div>
+            
+              <div id="camera4Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Damage Detected</span>
+                  <span>Value</span>
+                </div>
+              </div>
+            
+              <div id="camera5Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Object Missing Detected</span>
+                  <span>Value</span>
+                </div>
+              </div>
+            
+              <div id="camera6Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Program current state of the room</span>
+                  <span>Value</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Delta O3 Operations -->
+          <div class="row p-2 m-1 mb-3 rounded" style="background-color: #3273a81a;">
+            <div class="col-4 d-flex justify-content-between my-auto">
+              <div>
+                <img src="../ui_app/templates/img/delta_o3.png" class="img-fluid" alt="" srcset="" width="50">
+              </div>
+              <h4 class="section-title my-auto">Delta O3 Operations</h4>
+            </div>
+            <div class="col-8">
+              <div id="deltaO1Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>LED Light Ring</span>
+                  <span>Value</span>
+                </div>
+              </div>
+            
+              <div id="deltaO2Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Speaker with prerecorded audio</span>
+                  <span>Value</span>
+                </div>
+              </div>
+            
+              <div id="deltaO3Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Occupancy Sensing</span>
+                  <span>Value</span>
+                </div>
+              </div>
+            
+              <div id="deltaO4Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Sound Sensing</span>
+                  <span>Value</span>
+                </div>
+              </div>
+            
+              <div id="deltaO5Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Light Sensor</span>
+                  <span>Value</span>
+                </div>
+              </div>
+            
+              <div id="deltaO6Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Temperature: </span>
+                  <span id="temperatureF">0<span>&nbsp;°F</span></span>
+                </div>
+              </div>
+            
+              <div id="deltaO7Toggle">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Dial Controller</span>
+                  <span>Value</span>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 ps-1">
+          <!-- Lock #1 Operations -->
+          <div class="row p-2 m-1 mb-3 rounded" id="lock1Toggle" style="background-color: #3273a81a;">
+            <div class="col-md-4 d-flex justify-content-between my-auto">
+              <div>
+                <img src="../ui_app/templates/img/lock.png" class="img-fluid" alt="" srcset="" width="40">
+              </div>
+              <h4 class="section-title my-auto">Lock #1</h4>
+            </div>
+            <div class="col-md-8">
+              <div class="slider-container mx-auto w-100" id="sliderArea">
+                <div class="slider-track"></div>
+                <div class="slider-text" id="unlockText">Tap to unlock door</div>
+                <div class="slider-handle" id="sliderHandle">
+                  <strong><i class="bi bi-arrow-right fs-4 arrow"></i></strong>
+                </div>
+              </div>
+              <p class="text-start mt-3 fw-bold">Status: <span id="lockStatus" class="text-muted">Lock</span></p>
+            </div>
+          </div>
+          <!-- Lock #2 Operations -->
+          <div class="row p-2 m-1 mb-3 rounded" id="lock2Toggle" style="background-color: #3273a81a;">
+            <div class="col-md-4 d-flex justify-content-between my-auto">
+              <div>
+                <img src="../ui_app/templates/img/lock.png" class="img-fluid" alt="" srcset="" width="40">
+              </div>
+              <h4 class="section-title my-auto">Lock #2</h4>
+            </div>
+            <div class="col-md-8">
+              <div class="slider-container mx-auto w-100" id="sliderArea2">
+                <div class="slider-track"></div>
+                <div class="slider-text" id="unlockText2">Tap to unlock door</div>
+                <div class="slider-handle" id="sliderHandle2">
+                  <strong><i class="bi bi-arrow-right fs-4 arrow"></i></strong>
+                </div>
+              </div>
+              <p class="text-start mt-3 fw-bold">Status: <span id="lockStatus2" class="text-muted">Lock</span></p>
+            </div>
+          </div>
+          <!-- Relay Operations -->
+          <div class="row p-2 m-1 mb-3 rounded" id="glass1Toggle" style="background-color: #3273a81a;">
+            <div class="col-md-4 d-flex justify-content-between my-auto">
+              <div>
+                <img src="../ui_app/templates/img/e-glass.png" class="img-fluid" alt="" srcset="" width="40">
+              </div>
+              <h4 class="section-title my-auto">E-glass</h4>
+            </div>
+            <div class="col-md-8">
+              <div class=" p-3 rounded ">
+                <!-- <p><strong>Eglass</strong></p> -->
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Status: <span id="eglassStatus">OFF</span></span>
+                  <button class="btn btn-danger toggle-btn" id="eglassBtn" onclick="toggleEglass()">OFF</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        // document.addEventListener("DOMContentLoaded", function() {
-        //     document.documentElement.requestFullscreen();
-        // });
-        function sendCommand(button, command, isOn) {
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    const allButtons = document.querySelectorAll("button"); // Get all buttons
+
+
+          <!-- Fan #1 Operations -->
+          <div class="row p-2 m-1 mb-3 rounded" id="fan1Toggle" style="background-color: #3273a81a;">
+            <div class="col-md-4 d-flex justify-content-between my-auto">
+              <div>
+                <img src="../ui_app/templates/img/Fan.png" class="img-fluid" alt="" srcset="" width="40">
+              </div>
+              <h4 class="section-title my-auto">Fan #1</h4>
+            </div>
+            <div class="col-md-8">
+              <div class=" p-3 rounded ">
+                <input type="range" class="form-range slider mb-2" id="fanSlider" value="0" oninput="updateFanSpeed()">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Speed: <span id="fanSpeed">0%</span></span>
+                  <button class="btn btn-success toggle-btn" id="fanToggle" onclick="toggleFan()">ON</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fan #2 Operations -->
+          <div class="row p-2 m-1 mb-3 rounded" id="fan2Toggle" style="background-color: #3273a81a;">
+            <div class="col-md-4 d-flex justify-content-between my-auto">
+              <div>
+                <img src="../ui_app/templates/img/Fan.png" class="img-fluid" alt="" srcset="" width="40">
+              </div>
+              <h4 class="section-title my-auto">Fan #2</h4>
+            </div>
+            <div class="col-md-8">
+              <div class=" p-3 rounded ">
+                <input type="range" class="form-range slider mb-2" id="fanSlider2" value="0" oninput="updateFanSpeed2()">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Speed: <span id="fanSpeed2">0%</span></span>
+                  <button class="btn btn-success toggle-btn" id="fanToggle2" onclick="toggleFan2()">ON</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Light #1 Operations -->
+          <div class="row p-2 m-1 mb-3 rounded" id="light1Toggle" style="background-color: #3273a81a;">
+            <div class="col-md-4 d-flex justify-content-between my-auto">
+              <div>
+                <img src="../ui_app/templates/img/light.png" class="img-fluid" alt="" srcset="" width="40">
+              </div>
+              <h4 class="section-title my-auto">Light #1</h4>
+            </div>
+            <div class="col-md-8">
+              <div class="p-3 rounded  mb-4">
+                <input type="range" class="form-range slider mb-2" id="lightSlider" value="0"
+                  oninput="updateLightSpeed()">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Brightness: <span id="lightSpeed">0%</span></span>
+                  <button class="btn btn-success toggle-btn" id="lightToggle" onclick="toggleLight()">ON</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Light #2  Operations -->
+          <div class="row p-2 m-1 mb-3 rounded" id="light2Toggle" style="background-color: #3273a81a;">
+            <div class="col-md-4 d-flex justify-content-between my-auto">
+              <div>
+                <img src="../ui_app/templates/img/light.png" class="img-fluid" alt="" srcset="" width="40">
+              </div>
+              <h4 class="section-title my-auto">Light #2</h4>
+            </div>
+            <div class="col-md-8">
+              <div class="p-3 rounded  mb-4">
+                <input type="range" class="form-range slider mb-2" id="lightSlider2" value="0"
+                  oninput="updateLightSpeed2()">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>Brightness: <span id="lightSpeed2">0%</span></span>
+                  <button class="btn btn-success toggle-btn" id="lightToggle2" onclick="toggleLight2()">ON</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
+
+<script>
+
+  $( document ).ready(function() {
     
-    // Disable all buttons to prevent multiple clicks
-    allButtons.forEach(btn => btn.disabled = true);
+    // Initialize range track color on load
+    updateFanSpeed();
+    updateLightSpeed();
+    updateFanSpeed2();
+    updateLightSpeed2();
+    GetAllDevicePermissions();
+  });
+  
+  function GetAllDevicePermissions() {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    fetch("/control-device/", {
+    fetch("/get_all_device_permissions/", {
         method: "POST",
-        headers: { 
+        headers: {
             "Content-Type": "application/x-www-form-urlencoded",
             "X-CSRFToken": csrftoken
         },
-        body: `command=${encodeURIComponent(command)}`
     })
     .then(response => response.json())
     .then(data => {
-        document.getElementById("log").innerHTML = `<p><strong>Sent:</strong> ${data.command} | <strong>Response:</strong> ${data.response}</p>`;
-        button.className = isOn ? "on" : "off"; // Update button color
+        data.forEach(item => {
+            let operationFlag = item.Operation_Type != 0;
+            // Debug
+            console.log(operationFlag, " >> ", item.Button_Id);
+            if(operationFlag==true){
+              $("#"+item.Button_Id).show();
+            }else{
+              $("#"+item.Button_Id).hide();
+            }
+        });
     })
-    .catch(error => console.error("Error:", error))
-    .finally(() => {
-        // Re-enable all buttons after request is completed
-        setTimeout(() => {
-            allButtons.forEach(btn => btn.disabled = false);
-        }, 1000); // You can adjust delay based on the device response time
-    });
-}
+    .catch(error => console.error("Error:", error));
+  }
 
-    </script>
-</head>
-<body>
-    <h1>Device Control Panel</h1>
-    <form method="POST">{% csrf_token %}</form>
+  let isLightOn1 = false;
+  let isFanOn1 = false;
+  let isLightOn2 = false;
+  let isFanOn2 = false;
+  let isLocked = true;
+  let isLocked2 = true;
+  let tempC = 30.0;
+  let isCelsius = true;
+  let isEglassOn = false;
+  let fanSpeedCmd = "";
+  let lightSpeedCmd = "";
+  // let isFanOn = true;
+  // let isLightOn = true;
 
-    <h2>Lock Operations</h2>
-    <div class="button-container">
-        <button class="off" onclick="sendCommand(this, '$C01,01,00#', false)">Lock 1 Off</button>
-        <button class="on" onclick="sendCommand(this, '$C01,01,01#', true)">Lock 1 On</button>
-        <button class="off" onclick="sendCommand(this, '$C01,02,00#', false)">Lock 2 Off</button>
-        <button class="on" onclick="sendCommand(this, '$C01,02,01#', true)">Lock 2 On</button>
-        <button class="off" onclick="sendCommand(this, '$C01,99,00#', false)">All Locks Off</button>
-        <button class="on" onclick="sendCommand(this, '$C01,99,01#', true)">All Locks On</button>
-    </div>
+  document.getElementById('sliderArea').addEventListener('click', () => {
+    if (isLocked) {
+      unlockDoor();
+    } else {
+      lockDoor();
+    }
+  });
 
-    <h2>Fan Operations</h2>
-    <div class="button-container">
-        <button class="off" onclick="sendCommand(this, '$C02,01,00#', false)">Fan 1 Off</button>
-        <button class="on" onclick="sendCommand(this, '$C02,01,01#', true)">Fan 1 On</button>
-        <button class="off" onclick="sendCommand(this, '$C02,99,00#', false)">All Fans Off</button>
-        <button class="on" onclick="sendCommand(this, '$C02,99,01#', true)">All Fans On</button>
-        <button class="on" onclick="sendCommand(this, '$C04,01,50#', true)">Fan 1 50%</button>
-        <button class="on" onclick="sendCommand(this, '$C04,01,99#', true)">Fan 1 99%</button>
-    </div>
+  // Unlock function
+  function unlockDoor() {
+    sendCommand("$C01,01,00#");
+    isLocked = false;
+    document.getElementById('unlockText').innerText = 'Door is Unlocked';
+    document.getElementById('lockStatus').innerText = 'Unlocked';
+    document.getElementById('lockStatus').className = 'text-success';
+    document.getElementById('sliderHandle').style.left = '90%';
+    document.getElementById('sliderHandle').style.backgroundColor = '#dc3545';
 
-    <h2>Light Operations</h2>
-    <div class="button-container">
-        <button class="off" onclick="sendCommand(this, '$C03,01,00#', false)">Light 1 Off</button>
-        <button class="on" onclick="sendCommand(this, '$C03,01,01#', true)">Light 1 On</button>
-        <button class="off" onclick="sendCommand(this, '$C03,99,00#', false)">All Lights Off</button>
-        <button class="on" onclick="sendCommand(this, '$C03,99,01#', true)">All Lights On</button>
-        <button class="on" onclick="sendCommand(this, '$C05,01,50#', true)">Light 1 50%</button>
-        <button class="on" onclick="sendCommand(this, '$C05,01,99#', true)">Light 1 99%</button>
-    </div>
-
-    <h2>LED Operations</h2>
-    <div class="button-container">
-        <button class="off" onclick="sendCommand(this, '$C06,01,00#', false)">LED 1 Off</button>
-        <button class="on" onclick="sendCommand(this, '$C06,01,01#', true)">LED 1 On</button>
-        <button class="off" onclick="sendCommand(this, '$C06,02,00#', false)">LED 2 Off</button>
-        <button class="on" onclick="sendCommand(this, '$A06,02,00#', true)">LED 2 On</button>
-        <button class="off" onclick="sendCommand(this, '$C06,99,00#', false)">All LEDs Off</button>
-        <button class="on" onclick="sendCommand(this, '$C06,99,01#', true)">All LEDs On</button>
-    </div>
-
-    <h2>Command Log</h2>
-    <div id="log"></div>
-</body>
-</html>
+  }
 
 
+  // Lock function
+  function lockDoor() {
+    sendCommand("$C01,01,01#");
+    isLocked = true;
+    document.getElementById('unlockText').innerText = 'Tap to unlock door';
+    document.getElementById('lockStatus').innerText = 'Lock';
+    document.getElementById('lockStatus').className = 'text-muted';
+    document.getElementById('sliderHandle').style.left = '0%';  // Move slider back to left
+    document.getElementById('sliderHandle').style.backgroundColor = '#28a745'; // Green background
+  }
+
+  // Lock 2 ///
+
+  document.getElementById('sliderArea2').addEventListener('click', () => {
+    if (isLocked2) {
+      unlockDoor2();
+    } else {
+      lockDoor2();
+    }
+  });
+
+  // Unlock Lock #2
+  function unlockDoor2() {
+    sendCommand("$C01,02,00#"); 
+    isLocked2 = false;
+
+    document.getElementById('unlockText2').innerText = 'Door is Unlocked';
+    document.getElementById('lockStatus2').innerText = 'Unlocked';
+    document.getElementById('lockStatus2').className = 'text-success';
+    document.getElementById('sliderHandle2').style.left = '90%';
+    document.getElementById('sliderHandle2').style.backgroundColor = '#dc3545';
+  }
+
+  // Lock Lock #2
+  function lockDoor2() {
+    sendCommand("$C01,02,01#"); 
+    isLocked2 = true;
+
+    document.getElementById('unlockText2').innerText = 'Tap to unlock door';
+    document.getElementById('lockStatus2').innerText = 'Lock';
+    document.getElementById('lockStatus2').className = 'text-muted';
+    document.getElementById('sliderHandle2').style.left = '0%';
+    document.getElementById('sliderHandle2').style.backgroundColor = '#28a745';
+  }
+
+  function toggleEglass() {
+    isEglassOn = !isEglassOn;
+    const btn = document.getElementById('eglassBtn');
+    const status = document.getElementById('eglassStatus');
+
+    const command = isEglassOn ? "$C03,02,01#" : "$C03,02,00#";
+    sendCommand(command);
+
+    btn.className = isEglassOn ? 'btn btn-success toggle-btn' : 'btn btn-danger toggle-btn';
+    btn.innerText = isEglassOn ? 'ON' : 'OFF';
+    status.innerText = isEglassOn ? 'ON' : 'OFF';
+  }
+
+  /////  fan ////
+
+  function updateFanSpeed() {
+    const slider = document.getElementById('fanSlider');
+    const speed = slider.value;
+    document.getElementById('fanSpeed').innerText = `${speed}%`;
+    slider.style.setProperty('--range-fill', `${speed}%`);
+
+    fanSpeedCmd = `$C04,01,${speed.padStart(2, '0')}#`;
+    sendCommand(fanSpeedCmd);
+  }
+   function toggleFan() {
+    isFanOn1 = !isFanOn1;
+    const btn = document.getElementById('fanToggle');
+    const command = isFanOn1 ? "$C04,01,99#" : "$C04,01,00#";
+    sendCommand(command);
+    btn.className = isFanOn1 ? 'btn btn-success toggle-btn' : 'btn btn-danger toggle-btn';
+    btn.innerText = isFanOn1 ? 'ON' : 'OFF';
+  }
 
 
+  /////  fan 2   ///
+
+
+  function updateFanSpeed2() {
+    const slider = document.getElementById('fanSlider2');
+    const speed = slider.value;
+    document.getElementById('fanSpeed2').innerText = `${speed}%`;
+    slider.style.setProperty('--range-fill', `${speed}%`);
+
+    fanSpeedCmd = `$C04,02,${speed.padStart(2, '0')}#`;
+    sendCommand(fanSpeedCmd);
+  }
+
+  function toggleFan2() {
+    isFanOn2 = !isFanOn2;
+    const btn = document.getElementById('fanToggle2');
+    const command = isFanOn2 ? "$C04,02,99#" : "$C04,02,00#";
+    sendCommand(command);
+    btn.className = isFanOn2 ? 'btn btn-success toggle-btn' : 'btn btn-danger toggle-btn';
+    btn.innerText = isFanOn2 ? 'ON' : 'OFF';
+  }
+
+  //  Light //
+  function updateLightSpeed() {
+    const slider = document.getElementById('lightSlider');
+    const speed = slider.value;
+    document.getElementById('lightSpeed').innerText = `${speed}%`;
+    slider.style.setProperty('--range-fill',`${speed}%`);
+
+    lightSpeedCmd = `$C05,01,${speed.padStart(2, '0')}#`;
+    sendCommand(lightSpeedCmd);
+  }
+
+  function toggleLight() {
+    isLightOn1 = !isLightOn1;
+    const btn = document.getElementById('lightToggle');
+    const command = isLightOn1 ? "$C05,01,01#" : "$C05,01,00#";
+    sendCommand(command);  // Send to backend
+    btn.className = isLightOn1 ? 'btn btn-success toggle-btn' : 'btn btn-danger toggle-btn';
+    btn.innerText = isLightOn1 ? 'ON' : 'OFF';
+  }
+
+
+ //  Light 2
+ function updateLightSpeed2() {
+    const slider = document.getElementById('lightSlider2');
+    const speed = slider.value;
+    document.getElementById('lightSpeed2').innerText = `${speed}%`;
+    slider.style.setProperty('--range-fill', `${speed}%`);
+
+    lightSpeedCmd = `$C05,02,${speed.padStart(2, '0')}#`;
+    sendCommand(lightSpeedCmd);
+  }
+
+  function toggleLight2() {
+    isLightOn2 = !isLightOn2;
+    const btn = document.getElementById('lightToggle2');
+    const command = isLightOn2 ? "$C05,02,01#" : "$C05,01,00#";
+    sendCommand(command);  // Send to backend
+    btn.className = isLightOn2 ? 'btn btn-success toggle-btn' : 'btn btn-danger toggle-btn';
+    btn.innerText = isLightOn2 ? 'ON' : 'OFF';
+  }
+
+  function sendCommand(command) {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    fetch("/control-device/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRFToken": csrftoken
+      },
+      body: command=`${encodeURIComponent(command)}`
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.command);
+      })
+      .catch(error => console.error("Error:", error))
+      .finally(() => {
+        // GetDataFRomAndroidQueue();
+      });
+  }
+
+  // function Test(){
+  //   alert("Test function")
+  // }
+  function GetDataFRomAndroidQueue() {
+    // alert("here");
+    fetch("/get_sensor_data_from_queue/", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("pm2").textContent = data.response.PM2_5;
+        document.getElementById("iaq").textContent = data.response.IAQ;
+        // document.getElementById("pm10").textContent = data.response.PM10;
+        // document.getElementById("pm1").textContent = data.response.PM1;
+        // document.getElementById("co2").textContent = data.response.CO2;
+        document.getElementById("tvoc").textContent = data.response.TVOC_Value;
+        // document.getElementById("tvoc_index").textContent = data.response.TVOC_Index;
+        // document.getElementById("viral_risk_value").textContent = data.response.Viral_Value;
+        // document.getElementById("viral_risk_index").textContent = data.response.Viral_Index;
+        if (isCelsius)
+          document.getElementById("temperatureC").textContent = data.response.Temperature_C;
+        else
+          document.getElementById("temperatureF").textContent = data.response.Temperature_F;
+        document.getElementById("humidity").textContent = data.response.Humidity;
+
+      })
+      .catch(error => console.error("Error:", error));
+    //.finally(() => {
+    //  GetDataFRomAndroidQueue()
+    //});
+    setInterval(() => {
+      //  GetDataFRomAndroidQueue()
+    }, 1000);
+  }
+</script>

@@ -25,9 +25,9 @@ SECRET_KEY = '_azkd@$$@l9b&p#3ntwso%t3&=4yq=!9(5n_ofa(!b96_%2r_f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','192.168.29.88','localhost', '127.0.0.1','raspberrypi-pi.at.remote.it']
+ALLOWED_HOSTS = ['*','https://zenspace.tail97c9e0.ts.net/','192.168.29.88','localhost', '127.0.0.1','raspberrypi-pi.at.remote.it']
 
-
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ui_app',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -124,6 +125,7 @@ MEDIA_ROOT = BASE_DIR  # Because your images are saved in BASE_DIR/detected_imag
 CSRF_TRUSTED_ORIGINS = [
     'http://192.168.29.88:8000',
     'https://raspberrypi-pi.at.remote.it:33000',
+    'https://zenspace.tail97c9e0.ts.net',
 ]
 
 
